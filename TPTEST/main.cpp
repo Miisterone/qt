@@ -55,19 +55,6 @@ void indexDirectory(const QString &dirPath, int *indexedFileCount) {
     }
 }
 
-void displayProgressBar(int current, int total) {
-    int progress = static_cast<int>(static_cast<float>(current) / total * 100);
-
-    QString progressBar = QString("[%1%] ").arg(progress, 3, 10, QChar('0'));
-    int barWidth = 50;
-    int filledWidth = static_cast<int>(progress * barWidth / 100);
-
-    progressBar += '[' + QString(filledWidth, QChar('=')) + QString(barWidth - filledWidth, QChar(' ')) + ']';
-
-    // Utiliser '\r' pour revenir au début de la ligne et mettre à jour la barre de progression.
-    std::cout << "\r" << progressBar.toStdString() << std::flush;
-}
-
 int countFiles(const QString &dirPath) {
     int fileCount = 0;
     QDir dir(dirPath);
@@ -102,19 +89,7 @@ int main(int argc, char *argv[]) {
 
     int indexedFileCount = 0;
 
-       // Utilisez une fonction lambda pour mettre à jour la barre de progression
-       auto updateProgressBar = [&]() {
-           displayProgressBar(indexedFileCount, totalFileCount);
-       };
-
-       QTimer progressBarTimer;
-       QObject::connect(&progressBarTimer, &QTimer::timeout, updateProgressBar);
-       progressBarTimer.start(500); // Mettez à jour la barre de progression toutes les 500 ms
-
        indexDirectory(dirPath, &indexedFileCount);
-
-       progressBarTimer.stop();
-       updateProgressBar(); // Mettre à jour la barre de progression une dernière fois
        std::cout << std::endl; // Passer à la ligne suivante
 
        qDebug() << "Indexation terminée.";
