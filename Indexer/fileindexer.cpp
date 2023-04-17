@@ -46,4 +46,8 @@ void FileIndexer::indexDirectory(const QString &dirPath) {
             }
         }
     }
-}
+    m_totalFiles++;
+            int progress = static_cast<int>((static_cast<double>(m_totalFiles) / entries.count()) * 100);
+            emit indexingProgress(progress);
+        }
+

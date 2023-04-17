@@ -1,11 +1,11 @@
 #include <QApplication>
-#include "fileindexer.h"
 #include "mainwindow.h"
+#include "fileindexer.h"
 
 int main(int argc, char *argv[]) {
     QApplication app(argc, argv);
 
-    QString dirPath = "C:\\";
+    QString dirPath = "/Users/jean-philippehuc/Documents/REPO/qt/Indexer";
 
     if (argc > 1) {
         dirPath = argv[1];
@@ -15,12 +15,15 @@ int main(int argc, char *argv[]) {
 
     FileIndexer indexer;
     indexer.createDatabase();
+
+    MainWindow mainWindow;
+    // Connectez le signal de progression de FileIndexer au signal de MainWindow
+    QObject::connect(&indexer, &FileIndexer::indexingProgress, &mainWindow, &MainWindow::indexingProgress);
+    mainWindow.show();
+
     indexer.indexDirectory(dirPath);
 
     qDebug() << "Indexation terminée.";
-
-    MainWindow mainWindow;
-    mainWindow.show();
 
     return app.exec();
 }

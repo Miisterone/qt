@@ -12,8 +12,12 @@ public:
     void createDatabase();
     void indexDirectory(const QString &dirPath);
 
+signals:
+    void indexingProgress(int progress);
+
 private:
     QSqlDatabase m_database;
+    int m_totalFiles;
 };
 
 #endif // FILEINDEXER_H
