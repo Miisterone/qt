@@ -21,33 +21,40 @@ void FileIndexer::createDatabase() {
                "path TEXT PRIMARY KEY,"
                "filename TEXT,"
                "size INTEGER,"
-               "last_modified TEXT"
+               "last_modified TEXT,"
+               "created TEXT,"
+               "ext TEXT,"
+               "type TEXT"
                ")");
 }
 
 void FileIndexer::indexDirectory(const QString &dirPath) {
     QDir dir(dirPath);
-    QFileInfoList entries = dir.entryInfoList(QDir::NoDotAndDotDot | QDir::Files | QDir::Dirs | QDir::Hidden | QDir::System);
+    QFileInfoList entries = dir.entryInfoList(
+            QDir::NoDotAndDotDot | QDir::Files | QDir::Dirs | QDir::Hidden | QDir::System);
 
-    for (const QFileInfo &entry : entries) {
+    for (const QFileInfo &entry: entries) {
         if (entry.isDir()) {
             indexDirectory(entry.absoluteFilePath());
         } else {
             QSqlQuery query;
-            query.prepare("INSERT OR REPLACE INTO files (path, filename, size, last_modified) "
-                          "VALUES (:path, :filename, :size, :last_modified)");
+            query.prepare("INSERT OR REPLACE INTO files (path, filename, size, last_modified, created, ext, type) "
+                          "VALUES (:path, :filename, :size, :last_modified, :created, :ext, :type)");
             query.bindValue(":path", entry.absoluteFilePath());
             query.bindValue(":filename", entry.fileName());
             query.bindValue(":size", entry.size());
             query.bindValue(":last_modified", entry.lastModified().toString(Qt::ISODate));
+            query.bindValue(":created", entry.birthTime().toString(Qt::ISODate));
+            query.bindValue(":ext", entry.suffix());
+            query.bindValue(":type", entry.isDir() ? "directory" : "file");
 
             if (!query.exec()) {
                 qDebug() << "Erreur lors de l'insertion de fichier:" << query.lastError().text();
             }
         }
-    }
-    m_totalFiles++;
-            int progress = static_cast<int>((static_cast<double>(m_totalFiles) / entries.count()) * 100);
-            emit indexingProgress(progress);
-        }
 
+        m_totalFiles++;
+        int progress = static_cast<int>((static_cast<double>(m_totalFiles) / entries.count()) * 100);
+        emit indexingProgress(progress);
+    }
+}

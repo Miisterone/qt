@@ -9,6 +9,7 @@ class FileIndexer : public QObject {
 
 public:
     explicit FileIndexer(QObject *parent = nullptr);
+
     void createDatabase();
     void indexDirectory(const QString &dirPath);
 
@@ -17,7 +18,7 @@ signals:
 
 private:
     QSqlDatabase m_database;
-    int m_totalFiles;
+    int m_totalFiles = 0;
 };
 
-#endif // FILEINDEXER_H
+#endif

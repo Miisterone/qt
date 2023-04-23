@@ -5,7 +5,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 CONFIG += c++17
 QT += sql
 QT += core
-
+QT += network
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -14,11 +14,13 @@ QT += core
 SOURCES += \
     fileindexer.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    server.cpp
 
 HEADERS += \
     fileindexer.h \
-    mainwindow.h
+    mainwindow.h \
+    server.h
 
 FORMS += \
     mainwindow.ui
