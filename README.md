@@ -1,7 +1,9 @@
 
 # Indexing client/server
 
+## Intro
 
+Lancer deux qt creator pour ouvrir séparement le client du server.
 
 
 ## Features
