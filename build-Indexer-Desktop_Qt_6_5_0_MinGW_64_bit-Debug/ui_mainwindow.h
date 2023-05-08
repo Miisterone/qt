@@ -13,11 +13,11 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
-#include <QtWidgets/QListWidget>
+#include <QtWidgets/QListView>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenuBar>
-#include <QtWidgets/QProgressBar>
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QSpinBox>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QWidget>
 
@@ -27,15 +27,17 @@ class Ui_MainWindow
 {
 public:
     QWidget *centralwidget;
-    QProgressBar *progressBar;
-    QPushButton *startButton;
-    QLabel *serverStatusLabel;
-    QPushButton *pauseButton;
-    QPushButton *stopButton;
-    QLabel *serverStatusLabel_2;
-    QPushButton *resumeButton;
-    QLineEdit *searchLineEdit;
-    QListWidget *resultsListWidget;
+    QLineEdit *lineEditIPAddress;
+    QSpinBox *spinBoxPort;
+    QPushButton *pushButtonConnect;
+    QLabel *labelStatus;
+    QLineEdit *lineEditMessage;
+    QPushButton *pushButtonSend;
+    QLineEdit *lineEditPath;
+    QPushButton *pushButtonSendPath;
+    QLabel *label;
+    QLabel *label_2;
+    QListView *listView;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -43,41 +45,48 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName("MainWindow");
-        MainWindow->resize(583, 397);
+        MainWindow->resize(1125, 512);
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName("centralwidget");
-        progressBar = new QProgressBar(centralwidget);
-        progressBar->setObjectName("progressBar");
-        progressBar->setGeometry(QRect(30, 140, 118, 23));
-        progressBar->setValue(0);
-        startButton = new QPushButton(centralwidget);
-        startButton->setObjectName("startButton");
-        startButton->setGeometry(QRect(30, 60, 51, 24));
-        serverStatusLabel = new QLabel(centralwidget);
-        serverStatusLabel->setObjectName("serverStatusLabel");
-        serverStatusLabel->setGeometry(QRect(30, 100, 231, 31));
-        pauseButton = new QPushButton(centralwidget);
-        pauseButton->setObjectName("pauseButton");
-        pauseButton->setGeometry(QRect(90, 60, 51, 24));
-        stopButton = new QPushButton(centralwidget);
-        stopButton->setObjectName("stopButton");
-        stopButton->setGeometry(QRect(210, 60, 51, 24));
-        serverStatusLabel_2 = new QLabel(centralwidget);
-        serverStatusLabel_2->setObjectName("serverStatusLabel_2");
-        serverStatusLabel_2->setGeometry(QRect(60, 20, 131, 31));
-        resumeButton = new QPushButton(centralwidget);
-        resumeButton->setObjectName("resumeButton");
-        resumeButton->setGeometry(QRect(150, 60, 51, 24));
-        searchLineEdit = new QLineEdit(centralwidget);
-        searchLineEdit->setObjectName("searchLineEdit");
-        searchLineEdit->setGeometry(QRect(30, 190, 113, 24));
-        resultsListWidget = new QListWidget(centralwidget);
-        resultsListWidget->setObjectName("resultsListWidget");
-        resultsListWidget->setGeometry(QRect(220, 110, 351, 231));
+        lineEditIPAddress = new QLineEdit(centralwidget);
+        lineEditIPAddress->setObjectName("lineEditIPAddress");
+        lineEditIPAddress->setGeometry(QRect(20, 20, 113, 24));
+        spinBoxPort = new QSpinBox(centralwidget);
+        spinBoxPort->setObjectName("spinBoxPort");
+        spinBoxPort->setGeometry(QRect(141, 20, 61, 25));
+        spinBoxPort->setMaximum(10000);
+        spinBoxPort->setValue(7007);
+        pushButtonConnect = new QPushButton(centralwidget);
+        pushButtonConnect->setObjectName("pushButtonConnect");
+        pushButtonConnect->setGeometry(QRect(220, 20, 80, 24));
+        labelStatus = new QLabel(centralwidget);
+        labelStatus->setObjectName("labelStatus");
+        labelStatus->setGeometry(QRect(310, 20, 111, 21));
+        lineEditMessage = new QLineEdit(centralwidget);
+        lineEditMessage->setObjectName("lineEditMessage");
+        lineEditMessage->setGeometry(QRect(20, 190, 113, 24));
+        pushButtonSend = new QPushButton(centralwidget);
+        pushButtonSend->setObjectName("pushButtonSend");
+        pushButtonSend->setGeometry(QRect(150, 190, 80, 24));
+        lineEditPath = new QLineEdit(centralwidget);
+        lineEditPath->setObjectName("lineEditPath");
+        lineEditPath->setGeometry(QRect(20, 100, 113, 24));
+        pushButtonSendPath = new QPushButton(centralwidget);
+        pushButtonSendPath->setObjectName("pushButtonSendPath");
+        pushButtonSendPath->setGeometry(QRect(150, 100, 80, 24));
+        label = new QLabel(centralwidget);
+        label->setObjectName("label");
+        label->setGeometry(QRect(20, 70, 381, 21));
+        label_2 = new QLabel(centralwidget);
+        label_2->setObjectName("label_2");
+        label_2->setGeometry(QRect(20, 150, 381, 31));
+        listView = new QListView(centralwidget);
+        listView->setObjectName("listView");
+        listView->setGeometry(QRect(440, 10, 661, 441));
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName("menubar");
-        menubar->setGeometry(QRect(0, 0, 583, 21));
+        menubar->setGeometry(QRect(0, 0, 1125, 21));
         MainWindow->setMenuBar(menubar);
         statusbar = new QStatusBar(MainWindow);
         statusbar->setObjectName("statusbar");
@@ -91,12 +100,15 @@ public:
     void retranslateUi(QMainWindow *MainWindow)
     {
         MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "MainWindow", nullptr));
-        startButton->setText(QCoreApplication::translate("MainWindow", "Start", nullptr));
-        serverStatusLabel->setText(QCoreApplication::translate("MainWindow", "Etat server:", nullptr));
-        pauseButton->setText(QCoreApplication::translate("MainWindow", "Pause", nullptr));
-        stopButton->setText(QCoreApplication::translate("MainWindow", "Stop", nullptr));
-        serverStatusLabel_2->setText(QCoreApplication::translate("MainWindow", "Button pour l'indexing", nullptr));
-        resumeButton->setText(QCoreApplication::translate("MainWindow", "Resume", nullptr));
+        lineEditIPAddress->setText(QCoreApplication::translate("MainWindow", "127.0.0.1", nullptr));
+        pushButtonConnect->setText(QCoreApplication::translate("MainWindow", "Connection", nullptr));
+        labelStatus->setText(QString());
+        lineEditMessage->setText(QCoreApplication::translate("MainWindow", "Commande", nullptr));
+        pushButtonSend->setText(QCoreApplication::translate("MainWindow", "Envoyer", nullptr));
+        lineEditPath->setText(QCoreApplication::translate("MainWindow", "Path", nullptr));
+        pushButtonSendPath->setText(QCoreApplication::translate("MainWindow", "Envoyer", nullptr));
+        label->setText(QCoreApplication::translate("MainWindow", "Path custom (Le path par d\303\251faut cible le dossier document)", nullptr));
+        label_2->setText(QCoreApplication::translate("MainWindow", "Commande (indexer start,etc)", nullptr));
     } // retranslateUi
 
 };
